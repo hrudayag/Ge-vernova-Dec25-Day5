@@ -1,32 +1,34 @@
 import java.util.Random;
 public class EmployeeWageComputation {
-    // Class Constants
+    // Attendance constants
     public static final int IS_ABSENT = 0;
     public static final int IS_FULL_TIME = 1;
     public static final int IS_PART_TIME = 2;
-    public static final int WAGE_PER_HOUR = 20;
     public static final int FULL_DAY_HOUR = 8;
     public static final int PART_TIME_HOUR = 8;
-    public static final int MAX_WORKING_DAYS = 20;
-    public static final int MAX_WORKING_HOURS = 100;
-    // Class Variables
-    private static int totalMonthlyWage;
-    private static int totalWorkingHours;
-    private static int totalWorkingDays;
+
     public static void main(String[] args) {
         System.out.println("Welcome to Employee Wage Computation Program");
-        computeEmployeeWage();
+        computeEmployeeWage("GE Vernova", 20, 20, 100);
+        System.out.println("----------------------------------");
+        computeEmployeeWage("TCS", 25, 22, 110);
+        System.out.println("----------------------------------");
+        computeEmployeeWage("Infosys", 18, 20, 100);
     }
-    // Class Method to compute employee wage
-    public static void computeEmployeeWage() {
+    // UC-8: Class Method with function parameters
+    public static void computeEmployeeWage(
+            String companyName,
+            int wagePerHour,
+            int maxWorkingDays,
+            int maxWorkingHours) {
         Random random = new Random();
-        totalMonthlyWage = 0;
-        totalWorkingHours = 0;
-        totalWorkingDays = 0;
-        while (totalWorkingDays < MAX_WORKING_DAYS && totalWorkingHours < MAX_WORKING_HOURS) {
+        int totalWorkingDays = 0;
+        int totalWorkingHours = 0;
+        int totalMonthlyWage = 0;
+        while (totalWorkingDays < maxWorkingDays &&
+                totalWorkingHours < maxWorkingHours) {
             totalWorkingDays++;
             int empType = random.nextInt(3);
-            int dailyWage = 0;
             int workingHours = 0;
             switch (empType) {
                 case IS_FULL_TIME:
@@ -39,16 +41,20 @@ public class EmployeeWageComputation {
                     workingHours = 0;
                     break;
             }
-            totalWorkingHours += workingHours;
-            if (totalWorkingHours > MAX_WORKING_HOURS) {
-                workingHours = workingHours - (totalWorkingHours - MAX_WORKING_HOURS);
-                totalWorkingHours = MAX_WORKING_HOURS;
+            if (totalWorkingHours + workingHours > maxWorkingHours) {
+                workingHours = maxWorkingHours - totalWorkingHours;
             }
-            dailyWage = WAGE_PER_HOUR * workingHours;
+            totalWorkingHours += workingHours;
+            int dailyWage = workingHours * wagePerHour;
             totalMonthlyWage += dailyWage;
-            System.out.println("Day " + totalWorkingDays + ": Working Hours = " + workingHours + ", Daily Wage = " + dailyWage);
+
+            System.out.println(companyName +
+                    " : Day " + totalWorkingDays +
+                    "  Hours = " + workingHours +
+                    "  Daily Wage = " + dailyWage);
         }
-        System.out.println("\nTotal Working Days: " + totalWorkingDays);
+        System.out.println("\nCompany: " + companyName);
+        System.out.println("Total Working Days: " + totalWorkingDays);
         System.out.println("Total Working Hours: " + totalWorkingHours);
         System.out.println("Total Monthly Wage: " + totalMonthlyWage);
     }
