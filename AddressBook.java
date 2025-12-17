@@ -17,6 +17,15 @@ public class AddressBook {
         }
         return null;
     }
+    public void deleteContact(String firstName, String lastName) {
+        Contact contact = findContact(firstName, lastName);
+        if (contact != null) {
+            contacts.remove(contact);
+            System.out.println("Contact deleted successfully!");
+        } else {
+            System.out.println("Contact not found!");
+        }
+    }
     public void displayAllContacts() {
         if (contacts.isEmpty()) {
             System.out.println("No contacts in address book.");
